@@ -1,25 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { detect ,initialize} from "../utils/utils"
+import { detect, initialize } from "../utils/utils";
 
 const FaceExpressionDetector = () => {
   const videoRef = useRef(null);
   const faceLandmarkerRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const streamRef=useRef(null);
+  const streamRef = useRef(null);
 
-  const [expression, setExpression] = useState("Detecting...");
-   const [isLocked, setIsLocked] = useState(false);
-
- 
+  const [expression, setExpression] = useState("Click Detect");
 
   useEffect(() => {
-    initialize({faceLandmarkerRef ,videoRef ,streamRef});
+    const start = async () => {
+      await initialize({ faceLandmarkerRef, videoRef, streamRef });
+    };
+
+    start();
 
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-
       if (videoRef.current?.srcObject) {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
@@ -40,7 +36,14 @@ const FaceExpressionDetector = () => {
       />
 
       <h3>Expression: {expression}</h3>
-      <button onClick={()=>{detect({faceLandmarkerRef ,videoRef ,streamRef})}}>Detect</button>
+
+      <button
+        onClick={() =>
+          detect({ faceLandmarkerRef, videoRef, setExpression })
+        }
+      >
+        Detect
+      </button>
     </div>
   );
 };
