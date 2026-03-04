@@ -1,11 +1,12 @@
 import React from "react";
-import FaceExpressionDetector from "./features/Expression/components/FaceExpression";
-
+import { RouterProvider } from "react-router-dom";
+import router from "./app.routes";
+import { AuthProvider } from "./features/auth/auth.context";
 const App = () => {
   return (
-    <div>
-      <FaceExpressionDetector />
-    </div>
+    <AuthProvider>
+    <RouterProvider router={router} />
+    </AuthProvider>
   );
 };
 
