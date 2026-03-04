@@ -30,9 +30,10 @@ export const initialize = async ({
 export const detect = async ({
   faceLandmarkerRef,
   videoRef,
-  setExpression,
 }) => {
-  if (!videoRef.current || !faceLandmarkerRef.current) return;
+  if (!videoRef.current || !faceLandmarkerRef.current) {
+    return { expressionText: "Detector is not ready", mood: null };
+  }
 
   const now = performance.now();
 
@@ -55,18 +56,18 @@ export const detect = async ({
     const jawOpen = getScore("jawOpen");
 
      if (smileAvg > 0.55) {
-        setExpression("😊 Smiling");
+        return { expressionText: "😊 Smiling", mood: "happy" };
       } else if (
         frownLeft > 0.001 && // realistic threshold
         frownRight > 0.001
       ) {
-        setExpression("😢 Sad");
+        return { expressionText: "😢 Sad", mood: "sad" };
       } else if (jawOpen > 0.6) {
-        setExpression("😲 Surprised");
+        return { expressionText: "😲 Surprised", mood: "surprised" };
       } else {
-        setExpression("😐 Neutral");
+        return { expressionText: "😐 Neutral", mood: "neutral" };
       }
   } else {
-    setExpression("No face detected");
+    return { expressionText: "No face detected", mood: null };
   }
 };
