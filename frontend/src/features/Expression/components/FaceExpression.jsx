@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { detect, initialize } from "../utils/utils";
 import { useSong } from "../../../home/hooks/useSong";
+import { useNavigate } from "react-router-dom";
 
 const FaceExpressionDetector = () => {
   const videoRef = useRef(null);
@@ -10,6 +11,7 @@ const FaceExpressionDetector = () => {
   const [expression, setExpression] = useState("Click Detect");
   const [isDetecting, setIsDetecting] = useState(false);
   const { fetchSongs } = useSong();
+  const navigate = useNavigate();
 
   const handleDetect = async () => {
     setIsDetecting(true);
@@ -23,6 +25,7 @@ const FaceExpressionDetector = () => {
 
       if (mood) {
         await fetchSongs(mood);
+        navigate("/playlist");
       }
     } catch (error) {
       console.error("Error while detecting expression:", error);

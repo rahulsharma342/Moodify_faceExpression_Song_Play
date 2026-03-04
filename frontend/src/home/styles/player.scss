@@ -1,0 +1,637 @@
+// Color Variables - Spotify Theme
+$primary-color: #1db954;
+$secondary-color: #1ed760;
+$dark-bg: #0f172a;
+$card-bg: #1e1e1e;
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+$border-color: rgba(255, 255, 255, 0.1);
+$border-light: rgba(255, 255, 255, 0.2);
+$hover-bg: rgba(255, 255, 255, 0.1);
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(29, 185, 84, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(29, 185, 84, 0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Spotify Player Container
+.spotify-player {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, $dark-bg 0%, #0a0e27 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+// Playlist Section
+.playlist-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 24px;
+  padding-bottom: 200px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    padding-bottom: 180px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px;
+    padding-bottom: 160px;
+  }
+}
+
+.playlist-header {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+    color: $text-primary;
+    letter-spacing: -1px;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.2rem;
+    }
+  }
+
+  .song-count {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid $border-color;
+  }
+}
+
+// Native audio is controlled through custom UI
+.native-audio {
+  display: none;
+}
+
+// Empty State
+.player-empty {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $dark-bg 0%, #0a0e27 100%);
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    opacity: 0.6;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .empty-message {
+    font-size: 1.2rem;
+    color: $text-secondary;
+    opacity: 0.8;
+    font-weight: 500;
+  }
+}
+
+// Loading State
+.player-loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $dark-bg 0%, #0a0e27 100%);
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+
+  .loading-spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 3px solid $border-light;
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+  }
+
+  .loading-text {
+    color: $text-secondary;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Playlist Grid
+.playlist-grid {
+  display: grid;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  animation: fadeIn 0.4s ease-out;
+
+  // Custom Scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $text-secondary;
+    border-radius: 4px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.8;
+      background: $primary-color;
+    }
+  }
+}
+
+// Song Item Button (Spotify Style)
+.song-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 8px;
+  text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: visible;
+  border-radius: 8px;
+  width: 100%;
+
+  &:hover {
+    background: $hover-bg;
+
+    .song-poster {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    .song-title {
+      color: $text-primary;
+    }
+  }
+
+  &.active {
+    background: rgba(29, 185, 84, 0.15);
+    border-left: 4px solid $primary-color;
+    padding-left: 12px;
+
+    .song-poster {
+      box-shadow: 0 0 16px rgba(29, 185, 84, 0.5);
+      animation: shimmer 2s infinite;
+    }
+
+    .song-title {
+      color: $primary-color;
+      font-weight: 600;
+    }
+
+    .song-mood {
+      color: $primary-color;
+    }
+  }
+
+  @media (max-width: 480px) {
+    gap: 10px;
+    padding: 6px;
+  }
+}
+
+// Song Poster
+.song-poster {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+  @media (max-width: 480px) {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+}
+
+// Song Info Container
+.song-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// Song Title
+.song-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
+}
+
+// Song Mood
+.song-mood {
+  margin: 0;
+  font-size: 0.75rem;
+  color: $text-secondary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+// Playing Indicator
+.playing-indicator {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: $primary-color;
+  border-radius: 50%;
+  animation: pulse 0.8s ease-in-out infinite;
+  margin-right: 4px;
+}
+
+// Fixed Player Bar (Spotify Style)
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, $card-bg 100%);
+  border-top: 1px solid $border-color;
+  backdrop-filter: blur(10px);
+  padding: 16px 24px;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+  }
+}
+
+.player-bar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
+}
+
+// Now Playing Info
+.now-playing-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+  }
+}
+
+.now-playing-poster {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 480px) {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+}
+
+.now-playing-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.now-playing-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
+}
+
+.now-playing-mood {
+  margin: 0;
+  font-size: 0.75rem;
+  color: $text-secondary;
+}
+
+// Player Controls
+.player-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  justify-content: center;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
+}
+
+.transport-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.control-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: $text-primary;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: $primary-color;
+    transform: scale(1.06);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.play-btn {
+  width: 44px;
+  height: 44px;
+  background: $primary-color;
+  border-color: $primary-color;
+  color: #0b0b0b;
+  font-size: 1.05rem;
+
+  &:hover {
+    background: $secondary-color;
+    border-color: $secondary-color;
+    color: #0b0b0b;
+  }
+}
+
+.progress-wrap {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  gap: 10px;
+  align-items: center;
+}
+
+.time-label {
+  font-size: 0.72rem;
+  color: $text-secondary;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-slider,
+.volume-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: transparent;
+  cursor: pointer;
+
+  &::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  &::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+    border: none;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    margin-top: -4px;
+    border-radius: 50%;
+    background: $primary-color;
+    border: none;
+  }
+
+  &::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $primary-color;
+    border: none;
+  }
+}
+
+.player-extra {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}
+
+// Mood Display
+.mood-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 6px 12px;
+  background: rgba(29, 185, 84, 0.1);
+  border: 1px solid $primary-color;
+  border-radius: 20px;
+  min-width: fit-content;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+  }
+
+  .mood-label {
+    font-size: 0.75rem;
+    color: $text-secondary;
+    font-weight: 500;
+  }
+
+  .mood-value {
+    font-size: 0.85rem;
+    color: $primary-color;
+    font-weight: 600;
+  }
+}
+
+.volume-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 130px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+}
+
+.volume-btn {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  color: $text-secondary;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $text-primary;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
