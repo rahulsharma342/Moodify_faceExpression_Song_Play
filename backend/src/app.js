@@ -7,7 +7,7 @@ const app=express();
 app.use(express.json());
 app.use(cookiesParser())
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://moodify-faceexpression-song-play.onrender.com",
     credentials:true
 }))
 
