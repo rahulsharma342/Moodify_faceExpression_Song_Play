@@ -10,6 +10,7 @@ app.use(cors({
     origin:"https://moodify-faceexpression-song-play.onrender.com",
     credentials:true
 }))
+app.use(express.static("public"));
 
 app.use('/api/auth',authRouter);
 
