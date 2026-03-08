@@ -10,11 +10,26 @@ const FaceExpressionDetector = () => {
 
   const [expression, setExpression] = useState("Click Detect");
   const [isDetecting, setIsDetecting] = useState(false);
+
   const { fetchSongs } = useSong();
   const navigate = useNavigate();
 
+  // 🔴 stop camera function
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  // detect button
   const handleDetect = async () => {
     setIsDetecting(true);
+
     try {
       const { expressionText, mood } = await detect({
         faceLandmarkerRef,
@@ -24,11 +39,14 @@ const FaceExpressionDetector = () => {
       setExpression(expressionText);
 
       if (mood) {
+        stopCamera();
+
         await fetchSongs(mood);
-        navigate("/playlist");
+
+        navigate("/playlist", { replace: true });
       }
     } catch (error) {
-      console.error("Error while detecting expression:", error);
+      console.error("Detection error:", error);
       setExpression("Detection failed");
     } finally {
       setIsDetecting(false);
@@ -36,16 +54,19 @@ const FaceExpressionDetector = () => {
   };
 
   useEffect(() => {
-    const start = async () => {
-      await initialize({ faceLandmarkerRef, videoRef, streamRef });
+    const startCamera = async () => {
+      await initialize({
+        faceLandmarkerRef,
+        videoRef,
+        streamRef,
+      });
     };
 
-    start();
+    startCamera();
 
+    // cleanup
     return () => {
-      if (videoRef.current?.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      }
+      stopCamera();
     };
   }, []);
 
@@ -57,14 +78,26 @@ const FaceExpressionDetector = () => {
         ref={videoRef}
         width="480"
         height="360"
-        style={{ borderRadius: "12px" }}
         autoPlay
         muted
+        playsInline
+        style={{
+          borderRadius: "12px",
+          border: "2px solid #ccc",
+        }}
       />
 
       <h3>Expression: {expression}</h3>
 
-      <button onClick={handleDetect} disabled={isDetecting}>
+      <button
+        onClick={handleDetect}
+        disabled={isDetecting}
+        style={{
+          padding: "10px 20px",
+          fontSize: "16px",
+          cursor: "pointer",
+        }}
+      >
         {isDetecting ? "Detecting..." : "Detect"}
       </button>
     </div>

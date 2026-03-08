@@ -6,7 +6,7 @@ import { SongContextProvider } from "./home/song.context";
 const App = () => {
   return (
     <AuthProvider>
-      <SongContextProvider >
+    <SongContextProvider >
     <RouterProvider router={router} />
     </SongContextProvider>
     </AuthProvider>

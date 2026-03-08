@@ -33,6 +33,8 @@ import Register from "./features/auth/pages/Register";
 import Home from "./home/pages/Home";
 import Playlist from "./home/pages/Playlist";
 import Protected from "./features/auth/components/Protected";
+import FaceExpressionDetector from "./features/Expression/components/FaceExpression";
+import Contact from "./home/components/Contact";
 
 const router = createBrowserRouter([
   {
@@ -48,12 +50,24 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/FaceExpression",
+    element: (
+      <Protected>
+        <FaceExpressionDetector />
+      </Protected>
+    ),
+  },
+  {
     path: "/playlist",
     element: (
       <Protected>
         <Playlist />
       </Protected>
     ),
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
   },
   {
     path: "/login",

@@ -13,20 +13,41 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
     try {
       await handleRegister({ username, email, password });
-      navigate("/login"); // 🔥 yaha register call hoga
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.error("Registration failed:", error);
+      setError(
+        error?.message || error || "Registration failed. Please try again.",
+      );
     }
   }
   return (
     <main className="login-pages">
       <div className="form-container">
         <h1>Register</h1>
+
+        {error && (
+          <div
+            style={{
+              color: "#ff4444",
+              background: "rgba(255, 68, 68, 0.1)",
+              padding: "12px",
+              borderRadius: "8px",
+              marginBottom: "16px",
+              border: "1px solid rgba(255, 68, 68, 0.3)",
+            }}
+          >
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="username">Username</label>
@@ -64,7 +85,9 @@ const Register = () => {
               required
             />
           </div>
-          <button type="submit">{loading ? "Registering..." : "Register"}</button>
+          <button type="submit">
+            {loading ? "Registering..." : "Register"}
+          </button>
         </form>
         <p>
           Already have an account? <Link to="/login">Login</Link>

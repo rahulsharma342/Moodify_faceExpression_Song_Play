@@ -1,22 +1,32 @@
-import { createContext ,useState} from "react";
+import { createContext, useState, useEffect } from "react";
+import { getCurrentUser } from "./services/auth.api";
 
+export const AuthContext = createContext();
 
-export const AuthContext =createContext();
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const data = await getCurrentUser();
+        setUser(data.user);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-export const AuthProvider = ({children})=>{
+    fetchUser();
+  }, []);
 
-    const [user,setUser] = useState(null);
-    const [loading,setLoading] = useState(true);
-
-
-
-
-    return (
-        <AuthContext.Provider value={{user,setUser,loading,setLoading}}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
-
-
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

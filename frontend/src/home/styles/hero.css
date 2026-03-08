@@ -1,0 +1,78 @@
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #0f172a, #111827);
+  margin: 0;
+  height: 100vh;
+  background-color: #0f172a;
+  /* base dark color */
+
+  /* Big glowing spots */
+  background-image:
+    radial-gradient(circle at 30% 40%, rgba(255, 44, 116, 0.5), transparent 30%),
+    /* pink spot */
+    radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.5), transparent 50%);
+  /* purple spot */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/* hero container */
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 80px;
+}
+
+/* left */
+
+.hero-left {
+  max-width: 520px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.1;
+}
+.highlight {
+  color: #ff2c74;
+  font-weight: 600;
+}
+
+.hero-left h1 {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 10px;
+
+}
+
+.hero-left p {
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+.stats {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.listen-btn {
+  background: #ff2c74;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* right */
+.hero-right {
+  position: relative;
+  padding: 20px;
+}
+.hero-right img {
+  width: 370px; /* chhota kar diya from 420px */
+  max-width: 100%; /* screen ke hisaab se adjust ho jaye */
+  height: auto;
+  border-radius: 20px; /* maintain aspect ratio */
+}

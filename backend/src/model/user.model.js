@@ -25,7 +25,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is required"], // password required hai
         select: false // jab data fetch karenge to password by default nahi aayega
-    }
+    },
+    // Role field (user ya admin)
+
 
 }, {
     timestamps: true // automatically createdAt & updatedAt add karega
