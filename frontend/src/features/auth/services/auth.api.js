@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/", //backend url
+  baseURL: "https://moodify-faceexpression-song-play.onrender.com/", //backend url
   withCredentials: true, //allow sending cookies with requests
 });
 
